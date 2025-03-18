@@ -279,6 +279,10 @@ main {
   color: var(--White);
 }
 
+.badge--mobile {
+  display: none;
+}
+
 @media (max-width: 580px) {
 
   body {
@@ -328,6 +332,14 @@ main {
     flex-direction: column;
     gap: 3.2rem;
     padding-top: 2.4rem;
+  }
+
+  .badge {
+    display: none;
+  }
+
+  .badge--mobile {
+    display: flex;
   }
 }
 
