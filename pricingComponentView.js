@@ -45,18 +45,44 @@ export class PricingComponentView {
     }
 
     addHandlerSlider(handler) {
+        let rect;
+
         this._parentElement.addEventListener('mousemove', (ev) => {
             if(ev.target.closest('.pricing__slider') && ev.buttons) {
-                const rect = ev.target.getBoundingClientRect();
+                rect = ev.target.getBoundingClientRect();
                 const x = ev.clientX - rect.left;
                 return handler(x / rect.width);
             }
         });
 
+        // MOBILE
+
+        let touching = false;
+        let frame = false;
+
         this._parentElement.addEventListener('touchstart', (ev) => {
             if(ev.target.closest('.pricing__slider')) {
-                const rect = ev.target.getBoundingClientRect();
-                const x = ev.touches[0].clientX - rect.left;
+                rect = ev.target.getBoundingClientRect();
+                touching = true;
+                animateWithAnimationFrame();
+            }
+        });
+
+        function animateWithAnimationFrame() {
+            if(touching) {
+                frame = true;
+                requestAnimationFrame(animateWithAnimationFrame);
+            }
+        }
+
+        document.addEventListener('touchend', () => {
+            touching = false;
+        });
+
+        document.addEventListener('touchmove', (ev) => {
+            if(touching && frame) {
+                frame = false;
+                const x = ev.targetTouches[0].clientX - rect.left;
                 return handler(x / rect.width);
             }
         });
