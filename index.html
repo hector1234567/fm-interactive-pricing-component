@@ -14,6 +14,7 @@
 
     <title>Frontend Mentor | Interactive pricing component</title>
     <link rel="stylesheet" href="style.css" />
+    <script type="module" src="index.js"></script>
   </head>
   <body>
     <header>
@@ -21,16 +22,16 @@
       <p>Sign-up for our 30-day trial. <br>No credit card required.</p>
     </header>
     <main>
-      <div class="prizing">
-        <div class="prizing__header">
-          <span class="prizing__pageviews">100K Pageviews</span>
-          <div class="prizing__prize">
-            <span class="prizing__value">$16.00</span>
-            <span class="prizing__month">/ month</span>
+      <div class="pricing" id="pricingComponent">
+        <!-- <div class="pricing__header">
+          <span class="pricing__pageviews">100K Pageviews</span>
+          <div class="pricing__prize">
+            <span class="pricing__value">$16.00</span>
+            <span class="pricing__month">/ month</span>
           </div>
-          <div class="prizing__slider"></div>
+          <div class="pricing__slider"></div>
         </div>
-        <div class="prizing__footer">
+        <div class="pricing__footer">
           <div class="switch">
             <div class="switch__label">Monthly Billing</div>
             <div class="switch__component switch__component--on"></div>
@@ -38,7 +39,7 @@
           </div>
           <div class="badge">25% discount</div>
           <div class="badge badge--mobile">-25%</div>
-        </div>
+        </div> -->
       </div>
       <div class="start">
         <ul>
@@ -46,7 +47,7 @@
           <li>100% data ownership</li>
           <li>Email reports</li>
         </ul>
-        <button>Start my trial</button>
+        <button id="submit">Start my trial</button>
       </div>
     </main>
   </body>
