@@ -52,6 +52,14 @@ export class PricingComponentView {
                 return handler(x / rect.width);
             }
         });
+
+        this._parentElement.addEventListener('touchstart', (ev) => {
+            if(ev.target.closest('.pricing__slider')) {
+                const rect = ev.target.getBoundingClientRect();
+                const x = ev.touches[0].clientX - rect.left;
+                return handler(x / rect.width);
+            }
+        });
     }
 
     addSubmitHandler(handler) {
