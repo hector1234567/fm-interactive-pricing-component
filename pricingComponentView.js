@@ -17,21 +17,21 @@ export class PricingComponentView {
         const { pageviews, prize, yearly, discount } = this._data;
         return `
             <div class="pricing__header">
-            <span class="pricing__pageviews">${ (pageviews / 1000).toFixed(2) }K Pageviews</span>
-            <div class="pricing__prize">
-                <span class="pricing__value">$${ prize.toFixed(2) }</span>
-                <span class="pricing__month">/ ${ yearly ? 'year' : 'month'}</span>
-            </div>
-            <div class="pricing__slider"></div>
+                <span class="pricing__pageviews">${ (pageviews / 1000).toFixed(2) }K Pageviews</span>
+                <div class="pricing__prize">
+                    <span class="pricing__value">$${ prize.toFixed(2) }</span>
+                    <span class="pricing__month">/ ${ yearly ? 'year' : 'month'}</span>
+                </div>
+                <div class="pricing__slider"></div>
             </div>
             <div class="pricing__footer">
-            <div class="switch">
-                <div class="switch__label">Monthly Billing</div>
-                <div class="switch__component switch__component--${yearly ? 'on' : 'off'}"></div>
-                <div class="switch__label">Yearly Billing</div>
-            </div>
-            <div class="badge">${ discount }% discount</div>
-            <div class="badge badge--mobile">-${ discount }%</div>
+                <div class="switch">
+                    <div class="switch__label">Monthly Billing</div>
+                    <div class="switch__component switch__component--${yearly ? 'on' : 'off'}"></div>
+                    <div class="switch__label">Yearly Billing</div>
+                </div>
+                <div class="badge">${ discount }% discount</div>
+                <div class="badge badge--mobile">-${ discount }%</div>
             </div>
         `;
     }
@@ -47,7 +47,7 @@ export class PricingComponentView {
     addHandlerSlider(handler) {
         let isGrabbing = false;
 
-        ['mousedown', 'pointerdown'].forEach(eventName => {
+        ['mousedown'].forEach(eventName => {
             this._parentElement.addEventListener(eventName, (ev) => {
                 if(ev.target.closest('.pricing__slider')) {
                     isGrabbing = true;
@@ -55,13 +55,13 @@ export class PricingComponentView {
             });
         });
 
-        ['mouseup', 'pointerup'].forEach(eventName => {
+        ['mouseup'].forEach(eventName => {
             document.addEventListener(eventName, () => {
                 isGrabbing = false;
             });
         });
 
-        ['mousemove', 'pointerover'].forEach(eventName => {
+        ['mousemove'].forEach(eventName => {
             this._parentElement.addEventListener(eventName, (ev) => {
                 if(isGrabbing === true) {
                     const rect = this._parentElement.querySelector('.pricing__slider')
@@ -70,7 +70,17 @@ export class PricingComponentView {
                     return handler(x / rect.width);
                 }
             });
-        })
+        });
+
+        ['touchmove','touchstart', 'touchend'].forEach(eventName => {
+            this._parentElement.addEventListener(eventName, (ev) => {
+                if(ev.target.closest('.pricing__footer')) return;
+                const rect = this._parentElement.querySelector('.pricing__slider')
+                    .getBoundingClientRect();
+                const x = ev.changedTouches[0].clientX - rect.left;
+                return handler(x / rect.width);
+            })
+        });
     }
 
     addSubmitHandler(handler) {
