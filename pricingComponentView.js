@@ -45,47 +45,32 @@ export class PricingComponentView {
     }
 
     addHandlerSlider(handler) {
-        let rect;
+        let isGrabbing = false;
 
-        this._parentElement.addEventListener('mousemove', (ev) => {
-            if(ev.target.closest('.pricing__slider') && ev.buttons) {
-                rect = ev.target.getBoundingClientRect();
-                const x = ev.clientX - rect.left;
-                return handler(x / rect.width);
-            }
+        ['mousedown', 'pointerdown'].forEach(eventName => {
+            this._parentElement.addEventListener(eventName, (ev) => {
+                if(ev.target.closest('.pricing__slider')) {
+                    isGrabbing = true;
+                }
+            });
         });
 
-        // MOBILE
-
-        let touching = false;
-        let frame = false;
-
-        this._parentElement.addEventListener('touchstart', (ev) => {
-            if(ev.target.closest('.pricing__slider')) {
-                rect = ev.target.getBoundingClientRect();
-                touching = true;
-                animateWithAnimationFrame();
-            }
+        ['mouseup', 'pointerup'].forEach(eventName => {
+            document.addEventListener(eventName, () => {
+                isGrabbing = false;
+            });
         });
 
-        function animateWithAnimationFrame() {
-            if(touching) {
-                frame = true;
-                requestAnimationFrame(animateWithAnimationFrame);
-            }
-        }
-
-        document.addEventListener('touchend', () => {
-            touching = false;
-        });
-
-        document.addEventListener('touchmove', (ev) => {
-            if(touching && frame) {
-                frame = false;
-                const x = ev.targetTouches[0].clientX - rect.left;
-                return handler(x / rect.width);
-            }
-        });
+        ['mousemove', 'pointerover'].forEach(eventName => {
+            this._parentElement.addEventListener(eventName, (ev) => {
+                if(isGrabbing === true) {
+                    const rect = this._parentElement.querySelector('.pricing__slider')
+                        .getBoundingClientRect();
+                    const x = ev.clientX - rect.left;
+                    return handler(x / rect.width);
+                }
+            });
+        })
     }
 
     addSubmitHandler(handler) {
