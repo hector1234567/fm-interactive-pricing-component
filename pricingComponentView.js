@@ -17,7 +17,7 @@ export class PricingComponentView {
         const { pageviews, prize, yearly, discount } = this._data;
         return `
             <div class="pricing__header">
-                <span class="pricing__pageviews">${ (pageviews / 1000).toFixed(2) }K Pageviews</span>
+                <span class="pricing__pageviews">${ Math.floor(pageviews / 1000) }K Pageviews</span>
                 <div class="pricing__prize">
                     <span class="pricing__value">$${ prize.toFixed(2) }</span>
                     <span class="pricing__month">/ ${ yearly ? 'year' : 'month'}</span>
